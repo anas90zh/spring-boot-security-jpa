@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>BitUsers</title>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+</head>
+<body>
+
+	<div class="container my-2">
+		<h1>BitUsers List</h1>
+		<a th:href="@{/createuser}" class="btn btn-primary btn-sm mb-3">create
+			BitUser </a>
+
+		<table border="1" class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+						<th><a th:href="@{'/page/' + ${currentPage} + '?sortField=password&sortDir=' + ${reverseSortDir}}">Full Name</a></th>
+						<th><a th:href="@{'/page/' + ${currentPage} + '?sortField=userName&sortDir=' + ${reverseSortDir}}">user name</a></th>
+						<th><a th:href="@{'/page/' + ${currentPage} + '?sortField=roles&sortDir=' + ${reverseSortDir}}">email</a></th>
+						<th><a th:href="@{'/page/' + ${currentPage} + '?sortField=password&sortDir=' + ${reverseSortDir}}">password</a></th>
+						<th>Actions</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="bitUser : ${bitUsersList}">
+					<td th:text="${bitUser.name}"></td>
+					<td th:text="${bitUser.userName}"></td>
+					<td th:text="${bitUser.email}"></td>
+					<td th:text="${bitUser.password}"></td>
+					<td><a th:href="@{/updateBitUser/{id}(id=${bitUser.id})}"
+						class="btn btn-primary">update</a></td>
+					<td><a th:href="@{/deleteBitUser/{id}(id=${bitUser.id})}"
+						class="btn btn-danger">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<div th:if="${totalPages > 1}">
+			<div class="row col-sm-10">
+				<div class="col-sm-2">Total Rows: [[${totalItems}]]</div>
+				<div class="col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a
+						th:if="${currentPage != i}"
+						th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp;
+						&nbsp;
+					</span>
+				</div>
+				<div class="col-sm-1">
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+					<span th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+
+				<div class="col-sm-1">
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+					<span th:unless="${currentPage < totalPages}">Last</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
